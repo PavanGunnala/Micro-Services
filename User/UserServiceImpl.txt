@@ -1,0 +1,28 @@
+package com.example.demo;
+import java.util.List;
+
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+@Service
+public class UserServiceImpl implements UserService {
+
+	List<User> ulist = List.of(new User(1L, "aaaa", "5000"), new User(2L, "bbbb", "6000"),
+			new User(3L, "cccc", "70000")
+	);
+	@Override
+	public User getUser(Long userId) {
+		// TODO Auto-generated method stub
+		return ulist.stream().filter(usr->usr.getUserId().equals(userId)).findAny().orElse(null);
+	}
+	@Bean
+	@LoadBalanced
+	public RestTemplate restTemplate() {
+		return new RestTemplate();
+	}
+
+}
+
+
+
